@@ -1,0 +1,29 @@
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteBase /
+
+<files ~ "^.*\.([Hh][Tt][Aa])">
+	order allow,deny
+	deny from all
+	satisfy all
+</files>
+
+#LINKS AMIGABLES
+RewriteEngine on
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^ %{REQUEST_FILENAME} [L]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.php -f
+RewriteRule ^ %{REQUEST_FILENAME}/index.php [L]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteCond %{REQUEST_FILENAME}/index.php !-f
+RewriteRule ^ 404/ [L]
+
+#PRIMERO EL API
+RewriteRule ^blog(.*)$ 		blog/$1 									[QSA,NC,L]
+RewriteRule ^action(.*)$ 		trans/comunications.php?__route__=$1		[QSA,NC,L]
+RewriteRule logout 				trans/comunications.php?__route__=/logout	[QSA,NC,L]
+RewriteRule payu/confirmation 	trans/payu.php 								[QSA,NC,L]
+RewriteRule ^fb(.*)$ 			phplib/fb.php?__route__=$1					[QSA,NC,L]
+RewriteRule ^(.*)\?*$ 			index.php?__route__=/$1 					[QSA,NC,L]
+</IfModule>
